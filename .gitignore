@@ -1,0 +1,29 @@
+# Dependências
+node_modules/
+package-lock.json
+yarn.lock
+
+# Build
+dist/
+build/
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Ambiente
+.env
+.env.local
+.env.production
+
+# Temporários
+*.tmp
+*.temp

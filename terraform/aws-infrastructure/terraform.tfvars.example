@@ -1,0 +1,34 @@
+# Exemplo de arquivo terraform.tfvars
+# Copie este arquivo para terraform.tfvars e personalize os valores
+
+# Configurações Básicas
+aws_region   = "us-east-1"  # Região AWS (us-east-1 = Norte da Virgínia)
+project_name = "upae-agendamento"
+environment  = "production"
+
+# Configurações EC2
+instance_type        = "t3.micro"  # t3.micro = free tier eligible
+asg_min_size         = 2           # Mínimo de instâncias
+asg_max_size         = 4           # Máximo de instâncias
+asg_desired_capacity = 2           # Capacidade inicial
+
+# Segurança SSH
+# IMPORTANTE: Mude 0.0.0.0/0 para seu IP público específico!
+# Exemplo: ssh_allowed_cidr = ["203.0.113.0/32"]
+ssh_allowed_cidr = ["0.0.0.0/0"]
+
+# Key Pair (opcional - recomendado usar Session Manager)
+# key_pair_name = "minha-chave-aws"
+
+# Load Balancer
+enable_deletion_protection = false  # Mude para true em produção
+
+# SSL Certificate (descomente quando tiver certificado)
+# ssl_certificate_arn = "arn:aws:acm:us-east-1:123456789012:certificate/12345678-1234-1234-1234-123456789012"
+
+# Tags adicionais (opcional)
+additional_tags = {
+  Departamento = "TI"
+  CentroCusto  = "Saude"
+  Responsavel  = "Equipe UPAE"
+}

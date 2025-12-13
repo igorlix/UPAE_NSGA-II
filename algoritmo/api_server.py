@@ -11,6 +11,44 @@ import json
 app = Flask(__name__)
 CORS(app)  # Permitir requisições do frontend
 
+def normalize_patient_data(raw_patient):
+    """
+    Normaliza dados do paciente garantindo backward compatibility.
+    Campos novos da v2.0 recebem defaults se ausentes.
+
+    Args:
+        raw_patient: Dados brutos do paciente (pode ter campos ausentes)
+
+    Returns:
+        Paciente normalizado com todos os campos
+    """
+    return {
+        # Campos obrigatórios (devem existir)
+        'id': raw_patient.get('id', f"pac-{int(__import__('time').time())}"),
+        'especialidade': raw_patient['especialidade'],
+        'lat': raw_patient['lat'],
+        'lon': raw_patient['lon'],
+
+        # Campos opcionais antigos
+        'nome': raw_patient.get('nome', 'N/A'),
+        'cpf': raw_patient.get('cpf', ''),
+        'sexo': raw_patient.get('sexo', 'outro'),
+        'idade': raw_patient.get('idade', 0),
+        'endereco': raw_patient.get('endereco', ''),
+        'municipio': raw_patient.get('municipio', ''),
+
+        # NOVOS CAMPOS v2.0 com defaults
+        'severity_level': raw_patient.get('severity_level', 'amarelo'),       # Default: moderado
+        'condition_description': raw_patient.get('condition_description', ''),# Default: vazio
+        'tfd_eligible': raw_patient.get('tfd_eligible', False),               # Default: não elegível
+        'vulnerability_level': raw_patient.get('vulnerability_level', 'media'),# Default: média
+
+        # Campos existentes (agora funcionais)
+        'gestante': raw_patient.get('gestante', False),
+        'deficiencia': raw_patient.get('deficiencia', False),
+        'urgente': raw_patient.get('urgente', False)  # Deprecated, usar severity_level
+    }
+
 @app.route('/api/otimizar', methods=['POST'])
 def otimizar():
     """
@@ -63,17 +101,20 @@ def otimizar():
                 'erro': 'Dados inválidos. Necessário enviar paciente e upaes.'
             }), 400
 
-        paciente = data['paciente']
+        paciente_raw = data['paciente']
         upaes = data['upaes']
 
-        # Validar dados do paciente
+        # Validar campos obrigatórios
         campos_obrigatorios = ['especialidade', 'lat', 'lon']
         for campo in campos_obrigatorios:
-            if campo not in paciente:
+            if campo not in paciente_raw:
                 return jsonify({
                     'sucesso': False,
                     'erro': f'Campo obrigatório ausente no paciente: {campo}'
                 }), 400
+
+        # Normalizar dados do paciente (backward compatibility)
+        paciente = normalize_patient_data(paciente_raw)
 
         # Executar otimização
         resultado = otimizar_alocacao_paciente(paciente, upaes)

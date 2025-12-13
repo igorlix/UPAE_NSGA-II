@@ -19,7 +19,7 @@ def haversine(lat1, lon1, lat2, lon2):
 def clamp(x, a=0.0, b=0.95):
     return max(a, min(b, x))
 
-def generate_pe_data(n_patients=60, n_slots=80):
+def generate_pe_data(n_patients=60, n_slots=65):
     CITIES = {
         'Recife':   {'coords': (-8.05428, -34.8813), 'demand_weight': 0.3},
         'Jaboatao': {'coords': (-8.1765, -35.0326),  'demand_weight': 0.4},

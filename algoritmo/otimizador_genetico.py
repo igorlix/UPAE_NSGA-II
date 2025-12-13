@@ -22,6 +22,31 @@ WREF = 30.0       # tempo de espera de referência (dias)
 LAMBDA_D = 0.02   # sensibilidade distância vs no-show
 LAMBDA_T = 0.5    # sensibilidade transporte vs no-show
 
+# NOVOS PARÂMETROS - Versão 2.0
+LAMBDA_SEV = 0.6  # impacto de severidade (não utilizado diretamente, mas documentado)
+LAMBDA_TFD = 0.7  # redução de penalidade de distância para pacientes TFD
+LAMBDA_VULN = 0.3 # impacto de vulnerabilidade (não utilizado diretamente, mas documentado)
+
+# Multiplicadores de severidade (afetam baseline de no-show)
+SEVERITY_MULTIPLIERS = {
+    'verde': 1.4,      # +40% no-show base (não urgente)
+    'amarelo': 1.0,    # baseline (moderado)
+    'vermelho': 0.5    # -50% no-show base (urgente)
+}
+
+# Matriz de interação vulnerabilidade × severidade
+VULN_SEV_INTERACTION = {
+    ('baixa', 'verde'): 0.9,
+    ('baixa', 'amarelo'): 0.85,
+    ('baixa', 'vermelho'): 0.8,
+    ('media', 'verde'): 1.1,
+    ('media', 'amarelo'): 1.0,
+    ('media', 'vermelho'): 0.9,
+    ('alta', 'verde'): 1.5,      # Vulnerável + não urgente = alta chance de falta
+    ('alta', 'amarelo'): 1.2,
+    ('alta', 'vermelho'): 1.0    # Vulnerável + urgente = urgência supera barreiras
+}
+
 # Soft constraint no-show
 TH_NS = 0.7       # limite aceitável de no-show médio entre ATENDIDOS (70%)
 PEN_NS = 10.0     # penalidade multiplicada pela violação do limite
@@ -123,20 +148,53 @@ def can_fully_allocate(pacientes, upaes):
 
 def compute_p_noshow(paciente, upae, base_no_show):
     """
-    Calcula probabilidade de no-show baseada em:
-    - Distância geográfica (quanto mais longe, maior a chance de faltar)
-    - Qualidade do transporte público (score da UPAE)
-    - Probabilidade base da especialidade
+    Calcula probabilidade de no-show baseada em 5 fatores (Versão 2.0):
+    1. Distância geográfica (quanto mais longe, maior a chance de faltar)
+    2. Qualidade do transporte público (score da UPAE)
+    3. Severidade/Urgência do caso (verde/amarelo/vermelho)
+    4. TFD (Tratamento Fora de Domicílio) - transporte garantido
+    5. Vulnerabilidade social (interação com severidade)
+
+    Lógica principal:
+    - Casos VERDES (não urgentes) + vulnerabilidade alta = ALTA chance de falta
+    - Casos VERMELHOS (urgentes) = BAIXA chance de falta mesmo com barreiras
+    - TFD reduz drasticamente o impacto da distância
     """
+    # 1. Calcular distância
     dist = haversine(
         paciente['lat'], paciente['lon'],
         upae['lat'], upae['lon']
     )
-    transport_score = upae.get('transport_score', 0.5)
 
-    # Fórmula ajustada: prob aumenta com distância e diminui com bom transporte
-    p = base_no_show * (1 + LAMBDA_D * (dist / DIST_REF)) * (1 - LAMBDA_T * transport_score)
-    return clamp(p, 0.0, 0.95), dist
+    # 2. Obter dados do paciente com defaults (backward compatibility)
+    base_transport_score = upae.get('transport_score', 0.5)
+    severity_level = paciente.get('severity_level', 'amarelo')
+    tfd_eligible = paciente.get('tfd_eligible', False)
+    vulnerability_level = paciente.get('vulnerability_level', 'media')
+
+    # 3. TFD ajusta transporte e distância
+    if tfd_eligible:
+        # TFD: transporte garantido reduz barreiras
+        effective_transport_score = min(1.0, base_transport_score + LAMBDA_TFD)
+        effective_lambda_d = LAMBDA_D * (1 - LAMBDA_TFD)  # Distância importa 70% menos
+    else:
+        effective_transport_score = base_transport_score
+        effective_lambda_d = LAMBDA_D
+
+    # 4. Severity ajusta probabilidade base
+    severity_mult = SEVERITY_MULTIPLIERS.get(severity_level, 1.0)
+    adjusted_base = base_no_show * severity_mult
+
+    # 5. Aplicar distância e transporte (fórmula original com ajustes)
+    p_intermediate = adjusted_base * (1 + effective_lambda_d * (dist / DIST_REF)) * \
+                     (1 - LAMBDA_T * effective_transport_score)
+
+    # 6. Aplicar interação vulnerabilidade × severidade
+    vuln_sev_mult = VULN_SEV_INTERACTION.get((vulnerability_level, severity_level), 1.0)
+    p_final = p_intermediate * vuln_sev_mult
+
+    # 7. Clamping final (0% a 95% máximo)
+    return clamp(p_final, 0.0, 0.95), dist
 
 # ==========================================
 # RESTRIÇÕES E VIABILIDADE

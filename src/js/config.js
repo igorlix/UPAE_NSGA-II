@@ -95,6 +95,306 @@ const APP_CONFIG = {
     'default': { sexo: 'ambos', minIdade: 0, maxIdade: 150 }
   },
 
+  // --- CONDIÇÕES CLÍNICAS POR ESPECIALIDADE (v2.0) ---
+  CONDITION_OPTIONS_BY_SPECIALTY: {
+    // ESPECIALIDADES MÉDICAS
+    'Alergologia': [
+      'Rinite alérgica',
+      'Asma alérgica',
+      'Dermatite atópica',
+      'Urticária',
+      'Alergia alimentar',
+      'Outro (especifique)'
+    ],
+    'Angiologia': [
+      'Varizes',
+      'Trombose venosa',
+      'Insuficiência venosa',
+      'Doença arterial periférica',
+      'Aneurisma',
+      'Outro (especifique)'
+    ],
+    'Cardiologia': [
+      'Hipertensão arterial',
+      'Insuficiência cardíaca',
+      'Arritmia cardíaca',
+      'Doença coronariana',
+      'Valvulopatia',
+      'Cardiomiopatia',
+      'Avaliação pré-operatória',
+      'Outro (especifique)'
+    ],
+    'Cirurgia Geral': [
+      'Hérnia',
+      'Cálculo biliar (vesícula)',
+      'Apendicite',
+      'Avaliação de nódulo/tumor',
+      'Hemorroida',
+      'Fissura anal',
+      'Outro (especifique)'
+    ],
+    'Colposcopia': [
+      'Papanicolau alterado',
+      'Lesão no colo do útero',
+      'HPV',
+      'Biópsia de colo uterino',
+      'Outro (especifique)'
+    ],
+    'Dermatologia': [
+      'Acne',
+      'Psoríase',
+      'Dermatite',
+      'Micose',
+      'Vitiligo',
+      'Queda de cabelo',
+      'Lesão de pele (avaliação)',
+      'Outro (especifique)'
+    ],
+    'Endocrinologia': [
+      'Diabetes mellitus',
+      'Obesidade/Controle de peso',
+      'Disfunção tireoidiana',
+      'Hipertensão secundária',
+      'Osteoporose',
+      'Colesterol alto',
+      'Outro (especifique)'
+    ],
+    'Endocrinologia Infantil': [
+      'Diabetes infantil',
+      'Obesidade infantil',
+      'Baixa estatura',
+      'Puberdade precoce',
+      'Problemas de tireoide',
+      'Outro (especifique)'
+    ],
+    'Endoscopia': [
+      'Endoscopia digestiva alta',
+      'Colonoscopia',
+      'Investigação de dor abdominal',
+      'Sangramento digestivo',
+      'Outro (especifique)'
+    ],
+    'Gastroenterologia': [
+      'Refluxo gastroesofágico',
+      'Gastrite/úlcera',
+      'Doença inflamatória intestinal',
+      'Síndrome do intestino irritável',
+      'Cirrose hepática',
+      'Hepatite',
+      'Outro (especifique)'
+    ],
+    'Gastroenterologia Clínica': [
+      'Dor abdominal crônica',
+      'Diarreia crônica',
+      'Constipação',
+      'Doença hepática',
+      'Outro (especifique)'
+    ],
+    'Geriatria': [
+      'Avaliação geriátrica ampla',
+      'Quedas frequentes',
+      'Demência/Alzheimer',
+      'Polifarmácia',
+      'Fragilidade',
+      'Outro (especifique)'
+    ],
+    'Ginecologia': [
+      'Mioma uterino',
+      'Endometriose',
+      'Síndrome dos ovários policísticos',
+      'Sangramento uterino anormal',
+      'Menopausa',
+      'Cisto de ovário',
+      'Outro (especifique)'
+    ],
+    'Infectologia': [
+      'HIV/AIDS',
+      'Hepatite viral',
+      'Tuberculose',
+      'Infecção recorrente',
+      'Febre de origem indeterminada',
+      'Outro (especifique)'
+    ],
+    'Mastologia': [
+      'Nódulo mamário',
+      'Dor mamária',
+      'Descarga papilar',
+      'Acompanhamento câncer de mama',
+      'Outro (especifique)'
+    ],
+    'Nefrologia': [
+      'Insuficiência renal',
+      'Pedra nos rins (litíase)',
+      'Infecção urinária recorrente',
+      'Proteinúria',
+      'Hipertensão de causa renal',
+      'Outro (especifique)'
+    ],
+    'Neuropediatria': [
+      'Epilepsia infantil',
+      'Atraso no desenvolvimento',
+      'Cefaleia infantil',
+      'Paralisia cerebral',
+      'Outro (especifique)'
+    ],
+    'Neurologia': [
+      'Epilepsia',
+      'Cefaleia/Enxaqueca',
+      'AVC/Sequela de AVC',
+      'Doença de Parkinson',
+      'Esclerose múltipla',
+      'Neuropatia periférica',
+      'Outro (especifique)'
+    ],
+    'Neurologia Clínica': [
+      'Tontura/Vertigem',
+      'Tremores',
+      'Formigamento/Dormência',
+      'Dor neuropática',
+      'Outro (especifique)'
+    ],
+    'Oftalmologia': [
+      'Catarata',
+      'Glaucoma',
+      'Erro de refração (óculos)',
+      'Degeneração macular',
+      'Retinopatia diabética',
+      'Outro (especifique)'
+    ],
+    'Ortopedia': [
+      'Artrose',
+      'Hérnia de disco',
+      'Tendinite',
+      'Fratura (acompanhamento)',
+      'Dor lombar crônica',
+      'Lesão de menisco/ligamento',
+      'Outro (especifique)'
+    ],
+    'Otorrinolaringologia': [
+      'Sinusite crônica',
+      'Rinite',
+      'Perda auditiva',
+      'Tonsilite recorrente',
+      'Desvio de septo',
+      'Zumbido',
+      'Outro (especifique)'
+    ],
+    'Pediatria': [
+      'Acompanhamento de puericultura',
+      'Asma infantil',
+      'Alergia',
+      'Infecção recorrente',
+      'Outro (especifique)'
+    ],
+    'Pneumologia': [
+      'Asma',
+      'DPOC (Doença Pulmonar Obstrutiva Crônica)',
+      'Fibrose pulmonar',
+      'Apneia do sono',
+      'Tuberculose',
+      'Outro (especifique)'
+    ],
+    'Psiquiatria': [
+      'Depressão',
+      'Ansiedade/Transtorno de ansiedade',
+      'Transtorno bipolar',
+      'Esquizofrenia',
+      'TOC (Transtorno Obsessivo-Compulsivo)',
+      'TDAH (adulto)',
+      'Outro (especifique)'
+    ],
+    'Psiquiatria Infantil': [
+      'TDAH infantil',
+      'Autismo/TEA',
+      'Transtorno de conduta',
+      'Ansiedade infantil',
+      'Outro (especifique)'
+    ],
+    'Reumatologia': [
+      'Artrite reumatoide',
+      'Lúpus eritematoso sistêmico',
+      'Fibromialgia',
+      'Osteoartrite',
+      'Gota',
+      'Espondilite anquilosante',
+      'Outro (especifique)'
+    ],
+    'Urologia': [
+      'Hiperplasia prostática benigna',
+      'Cálculo urinário (pedra)',
+      'Incontinência urinária',
+      'Infecção urinária recorrente',
+      'Disfunção erétil',
+      'Outro (especifique)'
+    ],
+
+    // ESPECIALIDADES MULTIDISCIPLINARES (NÃO MÉDICAS)
+    'Nutrição': [
+      'Obesidade/Emagrecimento',
+      'Diabetes (orientação nutricional)',
+      'Hipertensão (orientação nutricional)',
+      'Distúrbio alimentar',
+      'Desnutrição',
+      'Dislipidemia (colesterol/triglicérides)',
+      'Outro (especifique)'
+    ],
+    'Psicologia': [
+      'Depressão',
+      'Ansiedade',
+      'Trauma/TEPT',
+      'Luto',
+      'Relacionamento familiar/conjugal',
+      'Autoestima',
+      'Outro (especifique)'
+    ],
+    'Fisioterapia': [
+      'Reabilitação pós-cirúrgica',
+      'Dor lombar',
+      'AVC (reabilitação)',
+      'Lesão esportiva',
+      'Artrose',
+      'Outro (especifique)'
+    ],
+    'Fonoaudiologia': [
+      'Atraso de fala/linguagem',
+      'Gagueira',
+      'Disfagia (dificuldade de engolir)',
+      'Afasia pós-AVC',
+      'Voz rouca/disfonia',
+      'Outro (especifique)'
+    ],
+    'Terapia Ocupacional': [
+      'Reabilitação de AVD (Atividades da Vida Diária)',
+      'Paralisia cerebral',
+      'AVC (adaptação funcional)',
+      'Autismo/TEA',
+      'Outro (especifique)'
+    ],
+    'Serviço Social': [
+      'Orientação sobre benefícios sociais',
+      'Acesso a medicamentos',
+      'TFD (Tratamento Fora de Domicílio)',
+      'Vulnerabilidade social',
+      'Outro (especifique)'
+    ],
+    'Psicopedagogia': [
+      'Dificuldade de aprendizagem',
+      'TDAH escolar',
+      'Dislexia',
+      'Outro (especifique)'
+    ],
+    'Odontologia': [
+      'Cárie',
+      'Doença periodontal (gengiva)',
+      'Extração dentária',
+      'Prótese dentária',
+      'Outro (especifique)'
+    ],
+
+    // Fallback para especialidades não listadas
+    'default': ['Outro (especifique)']
+  },
+
   // --- LISTA COMPLETA DE UPAES E SERVIÇOS ---
   UPAES: [
     {

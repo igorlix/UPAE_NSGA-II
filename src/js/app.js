@@ -74,12 +74,22 @@ class FormValidator {
     this.inputs = {
       nome: document.getElementById('nome'),
       documento: document.getElementById('documento'),
-      sexo: document.getElementById('sexo'),   // Novo
-      idade: document.getElementById('idade'), // Novo
+      sexo: document.getElementById('sexo'),
+      idade: document.getElementById('idade'),
       especialidade: document.getElementById('especialidade'),
       municipio: document.getElementById('municipio'),
       endereco: document.getElementById('endereco'),
-      consentimento: document.querySelectorAll('input[name="consentimento"]')
+      consentimento: document.querySelectorAll('input[name="consentimento"]'),
+
+      // NOVOS CAMPOS v2.0 - Informações Clínicas
+      severity_level: document.getElementById('severity_level'),
+      condition_description: document.getElementById('condition_description'),
+      condition_other: document.getElementById('condition_other'),
+      condition_other_container: document.getElementById('condition_other_container'),
+      vulnerability_level: document.getElementById('vulnerability_level'),
+      tfd_eligible: document.getElementById('tfd_eligible'),
+      gestante: document.getElementById('gestante'),
+      deficiencia: document.getElementById('deficiencia')
     };
   }
 
@@ -104,7 +114,48 @@ class FormValidator {
     this.inputs.sexo.addEventListener('change', () => this.atualizarListaEspecialidades());
     this.inputs.idade.addEventListener('input', () => this.atualizarListaEspecialidades());
 
+    // --- NOVA LÓGICA v2.0: Atualizar dropdown de condições quando especialidade muda ---
+    this.inputs.especialidade.addEventListener('change', () => this.atualizarOpcoesCondicao());
+
+    // --- NOVA LÓGICA v2.0: Mostrar campo "Outro" quando selecionado ---
+    this.inputs.condition_description.addEventListener('change', () => {
+      const selectedValue = this.inputs.condition_description.value;
+      if (selectedValue === 'Outro (especifique)') {
+        this.inputs.condition_other_container.classList.remove('hidden');
+      } else {
+        this.inputs.condition_other_container.classList.add('hidden');
+        this.inputs.condition_other.value = ''; // Limpa o campo se não for "Outro"
+      }
+    });
+
     this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+  }
+
+  // NOVA FUNÇÃO v2.0: Popula dropdown de condições baseado na especialidade selecionada
+  atualizarOpcoesCondicao() {
+    const especialidade = this.inputs.especialidade.value;
+    const conditionSelect = this.inputs.condition_description;
+
+    if (!especialidade) {
+      conditionSelect.disabled = true;
+      conditionSelect.innerHTML = '<option value="" disabled selected>Selecione uma especialidade primeiro</option>';
+      return;
+    }
+
+    // Busca lista de condições para esta especialidade
+    const condicoes = APP_CONFIG.CONDITION_OPTIONS_BY_SPECIALTY[especialidade] ||
+                      APP_CONFIG.CONDITION_OPTIONS_BY_SPECIALTY['default'];
+
+    // Popula o select
+    conditionSelect.disabled = false;
+    conditionSelect.innerHTML = '<option value="" selected>Selecione (opcional)</option>';
+
+    condicoes.forEach(condicao => {
+      const option = document.createElement('option');
+      option.value = condicao;
+      option.textContent = condicao;
+      conditionSelect.appendChild(option);
+    });
   }
 
   // Lógica principal de filtro com AGRUPAMENTO
@@ -337,6 +388,12 @@ class FormValidator {
     const consentimento = Array.from(this.inputs.consentimento)
       .find(radio => radio.checked)?.id === 'consentimento-sim';
 
+    // Determinar condição final (texto livre tem prioridade se "Outro" estiver selecionado)
+    let conditionFinal = this.inputs.condition_description.value || '';
+    if (conditionFinal === 'Outro (especifique)' && this.inputs.condition_other.value.trim()) {
+      conditionFinal = this.inputs.condition_other.value.trim();
+    }
+
     return {
       nome: this.inputs.nome.value.trim(),
       cpf: this.inputs.documento.value,
@@ -346,12 +403,20 @@ class FormValidator {
       municipio: this.inputs.municipio.value,
       endereco: this.inputs.endereco.value.trim(),
       consentimentoLocalizacao: consentimento,
-      dataEnvio: new Date().toISOString()
+      dataEnvio: new Date().toISOString(),
+
+      // NOVOS CAMPOS v2.0
+      severity_level: this.inputs.severity_level.value,
+      condition_description: conditionFinal,
+      vulnerability_level: this.inputs.vulnerability_level.value,
+      tfd_eligible: this.inputs.tfd_eligible.checked,
+      gestante: this.inputs.gestante.checked,
+      deficiencia: this.inputs.deficiencia.checked
     };
   }
 
   formatarPaciente(data) {
-    // Cria objeto paciente para o otimizador
+    // Cria objeto paciente para o otimizador (v2.0 com novos campos)
     return {
       id: 'pac-' + Date.now(),
       nome: data.nome,
@@ -361,9 +426,19 @@ class FormValidator {
       endereco: data.endereco,
       municipio: data.municipio,
       idade: data.idade,
-      gestante: false,
-      deficiencia: false,
-      urgente: false
+
+      // CAMPOS ATUALIZADOS v2.0 - agora funcionais (não mais hardcoded)
+      gestante: data.gestante || false,
+      deficiencia: data.deficiencia || false,
+
+      // NOVOS CAMPOS v2.0
+      severity_level: data.severity_level || 'amarelo',
+      condition_description: data.condition_description || '',
+      vulnerability_level: data.vulnerability_level || 'media',
+      tfd_eligible: data.tfd_eligible || false,
+
+      // Campo deprecated (mantido por compatibilidade, mas severity_level é preferido)
+      urgente: data.severity_level === 'vermelho'
     };
   }
 

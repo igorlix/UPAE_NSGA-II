@@ -23,7 +23,33 @@ Thumbs.db
 .env
 .env.local
 .env.production
+.env*
 
 # Temporários
 *.tmp
 *.temp
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!terraform.tfvars.example
+.terraform.lock.hcl
+tfplan
+tfplan.binary
+
+# Misc
+*.bak
+*.orig

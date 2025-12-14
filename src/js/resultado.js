@@ -520,16 +520,71 @@ function mostrarWhatsAppSimulado() {
             <!-- Wallpaper WhatsApp -->
             <div class="h-[500px] bg-[#ECE5DD] overflow-y-auto p-4" style="background-image: url('data:image/svg+xml,%3Csvg width=\\'100\\' height=\\'100\\' xmlns=\\'http://www.w3.org/2000/svg\\'%3E%3Cpath d=\\'M0 0h50v50H0z\\' fill=\\'%23d9d9d9\\' opacity=\\'.02\\'/%3E%3C/svg%3E');">
 
-                <!-- Mensagem da UPAE -->
+                <!-- Aviso de Simulação -->
+                <div class="text-center mb-3">
+                    <span class="bg-orange-100 text-orange-800 text-xs px-3 py-1 rounded-full border border-orange-300 inline-flex items-center gap-1">
+                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                        </svg>
+                        Esta é uma simulação de mensagem WhatsApp
+                    </span>
+                </div>
+
+                <!-- Mensagem da UPAE - Saudação -->
                 <div class="flex mb-3">
                     <div class="bg-white rounded-lg shadow-sm p-3 max-w-xs">
-                        <p class="text-sm text-gray-800 mb-2">
-                            Olá, ${paciente.nome}!
+                        <p class="text-sm text-gray-800">
+                            Olá, ${paciente.nome}! 👋
                         </p>
-                        <p class="text-sm text-gray-800 mb-2">
-                            Seu agendamento foi confirmado com sucesso!
+                        <p class="text-xs text-gray-400 text-right mt-1">10:20</p>
+                    </div>
+                </div>
+
+                <!-- Mensagem da UPAE - Pedido de confirmação -->
+                <div class="flex mb-3">
+                    <div class="bg-white rounded-lg shadow-sm p-3 max-w-xs">
+                        <p class="text-sm text-gray-800 mb-3">
+                            Você solicitou um agendamento para <strong>${paciente.especialidade || 'consulta especializada'}</strong>.
                         </p>
-                        <p class="text-xs text-gray-400 text-right">10:23</p>
+                        <p class="text-sm text-gray-800 mb-3">
+                            Confirma o agendamento na UPAE de <strong>${opcaoSelecionadaAtual?.especialista?.municipio || 'sua região'}</strong>?
+                        </p>
+                        <p class="text-xs text-gray-400 text-right">10:21</p>
+                    </div>
+                </div>
+
+                <!-- Botões de Confirmação (Simulados) -->
+                <div class="flex mb-3">
+                    <div class="bg-white rounded-lg shadow-sm p-3 max-w-xs border border-gray-200">
+                        <div class="flex flex-col gap-2">
+                            <button class="bg-green-500 text-white py-2 px-4 rounded-lg text-sm font-semibold hover:bg-green-600 transition">
+                                ✓ Sim, confirmar
+                            </button>
+                            <button class="bg-gray-200 text-gray-700 py-2 px-4 rounded-lg text-sm font-semibold hover:bg-gray-300 transition">
+                                ✗ Não, cancelar
+                            </button>
+                        </div>
+                        <p class="text-xs text-gray-400 text-right mt-2">10:21</p>
+                    </div>
+                </div>
+
+                <!-- Resposta do Paciente (Simulada) -->
+                <div class="flex justify-end mb-3">
+                    <div class="bg-[#DCF8C6] rounded-lg shadow-sm p-3 max-w-xs">
+                        <p class="text-sm text-gray-800">
+                            ✓ Sim, confirmar
+                        </p>
+                        <p class="text-xs text-gray-400 text-right mt-1">10:22 ✓✓</p>
+                    </div>
+                </div>
+
+                <!-- Mensagem da UPAE - Confirmação recebida -->
+                <div class="flex mb-3">
+                    <div class="bg-white rounded-lg shadow-sm p-3 max-w-xs">
+                        <p class="text-sm text-gray-800">
+                            Ótimo! Seu agendamento foi confirmado com sucesso! ✅
+                        </p>
+                        <p class="text-xs text-gray-400 text-right mt-1">10:23</p>
                     </div>
                 </div>
 

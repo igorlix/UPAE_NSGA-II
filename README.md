@@ -1,72 +1,81 @@
 # Sistema de Otimização e Transparência na Distribuição de Pacientes nas UPAs
 
-Sistema inteligente para agendamento e alocação otimizada de consultas médicas desenvolvido com HTML, Tailwind CSS, JavaScript e integração com Google Maps API.
+Sistema inteligente para agendamento e alocação otimizada de consultas médicas nas Unidades de Pronto Atendimento Especializado (UPAE) de Pernambuco.
 
-## Funcionalidades Principais
+## Visão Geral
 
-### 1. Formulário de Agendamento
+O projeto implementa um algoritmo genético NSGA-II que otimiza simultaneamente múltiplos objetivos na alocação de pacientes:
 
+- Minimização da distância entre paciente e UPAE
+- Minimização do tempo de espera para consulta
+- Minimização da probabilidade de não comparecimento (no-show)
+- Maximização do acesso via transporte público
 
-### 2. Integração com Google Maps
-- Cálculo de distância real (não em linha reta)
-- Rotas de transporte público com transferências
-- Estimativa de tempo de viagem
-- Estimativa de custo (ônibus e aplicativo)
-- Visualização em mapa interativo
+O algoritmo considera fatores clínicos e sociais para produzir alocações mais eficientes e equitativas, reduzindo faltas e melhorando o uso dos recursos do sistema de saúde.
 
+## Algoritmo de Otimização
 
-## Tecnologias Utilizadas
+Para detalhes completos sobre o funcionamento, fórmulas e parâmetros, consulte [algoritmo/README.md](algoritmo/README.md).
 
-### Frontend
-- **HTML5** 
-- **Tailwind CSS 3.4+** 
-- **JavaScript ES6+** 
-- **Chart.js** 
+**Principais características:**
+- Otimização multi-objetivo com Front de Pareto
+- Considera severidade clínica
+- Calcula de probabilidade de no-show
 
-### APIs e Integrações
-- **Google Maps API** - Rotas, distâncias e mapas
-- **ViaCEP** - Busca de endereços
-
-### Algoritmos
-- **Otimização Multiobjetivo**
-- **Algoritmo Genético** 
-
-## Formato dos Dados
-
-### Dados do Agendamento
-```json
-{
-  "nome": "João da Silva",
-  "cpf": "123.456.789-00",
-  "idade": 45,
-  "gestante": false,
-  "deficiencia": false,
-  "urgente": false,
-  "especialidade": "cardiologia",
-  "municipio": "recife",
-  "endereco": "Rua Exemplo, 123",
-  "consentimentoLocalizacao": true,
-  "dataEnvio": "2025-01-15T10:30:00.000Z"
-}
+**Executar o servidor da API:**
+```bash
+cd algoritmo
+pip install -r requirements.txt
+python api_server.py
+# Servidor iniciado em http://localhost:5000
 ```
 
-### Resultado da Otimização
-```json
-{
-  "sucesso": true,
-  "melhorOpcao": {
-    "especialista": { /* dados */ },
-    "score": 0.234,
-    "detalhes": {
-      "distancia": 12.5,
-      "tempoEspera": 5,
-      "custo": 4.10,
-      "custoUber": 35.50,
-      "numeroTransferencias": 1
-    },
-    "viavel": true
-  },
-  "explicacao": { /* transparência */ },
-  "alternativas": [ /* outras opções */ ]
-}
+## Estrutura do Projeto
+
+O projeto possui duas versões de interface:
+
+### 1. Versão Web (HTML/CSS/JavaScript)
+Interface web tradicional desenvolvida com HTML5, Tailwind CSS e JavaScript puro. Está na raiz do projeto.
+
+**Tecnologias:**
+- HTML5
+- Tailwind CSS 3.4+
+- JavaScript ES6+
+- Google Maps API
+
+**Como executar:**
+```bash
+# Abra o index.html em um navegador web
+# Ou use um servidor local simples
+python -m http.server 8000
+cd algoritmo
+pip install -r requirements.txt
+python api_server.py
+# Acesse http://localhost:8000
 ```
+
+### 2. Versão Mobile (React Native + Expo)
+Aplicativo mobile multiplataforma desenvolvido com React Native e Expo. Localizada em `app-mobile/`.
+
+**Tecnologias:**
+- React Native
+- Expo SDK 54
+
+**Como executar:**
+```bash
+cd app-mobile
+npm install
+npx expo start
+
+# Para rodar em dispositivo físico:
+# - Instale Expo Go no celular
+# - Escaneie QR code
+
+# Para rodar em emulador:
+# - Android: npx expo start --android
+# - iOS: npx expo start --ios
+```
+
+## Desenvolvido por:
+
+O sistema foi desenvolvido pelos alunos da graduação em Engenharia na Computação na UPE na disciplina de Computação Natural.

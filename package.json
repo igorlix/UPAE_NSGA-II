@@ -1,7 +1,7 @@
 {
   "name": "sistema-agendamento-consulta",
   "version": "1.0.0",
-  "description": "Sistema de agendamento de consultas médicas com Tailwind CSS",
+  "description": "Sistema de agendamento de consultas médicas",
   "main": "pages/index.html",
   "scripts": {
     "dev": "npx tailwindcss -i ./src/css/styles.css -o ./dist/output.css --watch",
@@ -15,8 +15,8 @@
     "tailwindcss",
     "javascript"
   ],
-  "author": "",
-  "license": "MIT",
+  "author": "Alunos da UPE",
+  "license": "",
   "devDependencies": {
     "tailwindcss": "^3.4.0",
     "http-server": "^14.1.1"

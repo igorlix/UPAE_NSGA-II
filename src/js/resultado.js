@@ -182,7 +182,7 @@ function selecionarOpcao(selectedIndex, listaOpcoes) {
     const badge = document.getElementById('badge-recomendacao');
     
     if (selectedIndex === 0) {
-        badge.textContent = "Melhor Opção (IA)";
+        badge.textContent = "Opção Recomendada";
         badge.className = "inline-block px-2 py-1 rounded bg-green-400 text-green-900 text-xs font-bold uppercase tracking-wide mb-2 backdrop-blur-sm shadow-sm";
     } else {
         badge.textContent = "Alternativa";

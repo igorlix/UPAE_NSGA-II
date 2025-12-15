@@ -1,4 +1,4 @@
-# UPAE NSGA-II Optimizer - Versão 2.0
+# UPAE NSGA-II Optimizer
 
 Sistema de otimização multi-objetivo para alocação inteligente de pacientes em Unidades de Pronto Atendimento Especializado (UPAE) usando algoritmo genético NSGA-II.
 

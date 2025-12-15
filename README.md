@@ -4,6 +4,9 @@ Sistema inteligente para agendamento e alocação otimizada de consultas médica
 
 ## Visão Geral
 
+
+![App](public/assets/images/AppCNAT.png)
+
 O projeto implementa um algoritmo genético NSGA-II que otimiza simultaneamente múltiplos objetivos na alocação de pacientes:
 
 - Minimização da distância entre paciente e UPAE
